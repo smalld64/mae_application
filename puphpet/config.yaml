@@ -10,7 +10,7 @@ vagrantfile:
         network:
             private_network: 192.168.56.101
             forwarded_port:
-                vflnp_r7ojuvi8lalz:
+                vflnp_4xsjt5kwlblf:
                     host: '8990'
                     guest: '22'
         post_up_message: ''
@@ -18,6 +18,7 @@ vagrantfile:
             virtualbox:
                 modifyvm:
                     natdnshostresolver1: on
+                showgui: ''
             vmware:
                 numvcpus: 1
             parallels:
@@ -32,10 +33,14 @@ vagrantfile:
                     - '--hiera_config /vagrant/puphpet/puppet/hiera.yaml'
                     - '--parser future'
         synced_folder:
-            vflsf_mpz7cu517wyu:
+            vflsf_rcmnxkj0rx7t:
                 source: ./
                 target: /var/www
                 sync_type: default
+                smb:
+                    smb_host: ''
+                    smb_username: ''
+                    smb_password: ''
                 rsync:
                     args:
                         - '--verbose'
@@ -64,7 +69,11 @@ vagrantfile:
         host: detect
 server:
     install: '1'
-    packages: {  }
+    packages:
+        - curl
+        - wget
+        - git
+        - ant
 users_groups:
     install: '1'
     groups: {  }
@@ -75,7 +84,7 @@ firewall:
 cron:
     install: '1'
     jobs:
-        cj_jf2rb9e29gyu:
+        cj_f7ltqojxcehz:
             name: ''
             user: ''
             command: ''
@@ -84,7 +93,7 @@ cron:
             weekday: ''
             month: ''
             monthday: ''
-        cj_bgh442sxytdq:
+        cj_32taquy7dubw:
             name: ''
             user: ''
             command: ''
@@ -101,7 +110,7 @@ nginx:
         proxy_buffers: '4 256k'
     upstreams: {  }
     vhosts:
-        nxv_b7g0sy7z2ytg:
+        nxv_64gn72jwih45:
             server_name: awesome.dev
             server_aliases:
                 - www.awesome.dev
@@ -121,7 +130,7 @@ nginx:
             rewrite_to_https: '1'
             spdy: '1'
             locations:
-                nxvl_fhnda2r61xm0:
+                nxvl_an6qpcl2kcrr:
                     location: /
                     autoindex: off
                     try_files:
@@ -131,7 +140,7 @@ nginx:
                     fastcgi: ''
                     fastcgi_index: ''
                     fastcgi_split_path: ''
-                nxvl_8rdut3uq6mec:
+                nxvl_l6l3975ekgcz:
                     location: '~ \.php$'
                     autoindex: off
                     try_files:
@@ -157,8 +166,12 @@ apache:
     modules:
         - proxy_fcgi
         - rewrite
+        - ldap
+        - vhost_alias
+        - expires
+        - deflate
     vhosts:
-        av_4q6tdftqdufy:
+        av_x79sqczqg31q:
             servername: dev.local
             serveraliases:
                 - m.dev.local
@@ -175,7 +188,7 @@ apache:
             ssl_protocol: ''
             ssl_cipher: ''
             directories:
-                avd_fllvca2w8ao8:
+                avd_c0rz6o9s61dw:
                     path: /var/www/app/frontend/web/
                     options:
                         - Indexes
@@ -187,14 +200,16 @@ apache:
                         - 'all granted'
                     custom_fragment: ''
                     files_match:
-                        avdfm_op8v4ook6ueg:
+                        avdfm_a1tzih2raqx3:
                             path: \.php$
                             sethandler: 'proxy:fcgi://127.0.0.1:9000'
                             custom_fragment: ''
                             provider: filesmatch
                     provider: directory
-        av_nun5eh8kqqde:
+        av_3h60iw96juig:
             servername: admin.dev.local
+            serveraliases:
+                - m.admin.dev.local
             docroot: /var/www/app/backend/web
             port: '80'
             setenv:
@@ -208,7 +223,7 @@ apache:
             ssl_protocol: ''
             ssl_cipher: ''
             directories:
-                avd_damjyt08fktx:
+                avd_m3svowkrz1lb:
                     path: /var/www/app/backend/web/
                     options:
                         - Indexes
@@ -220,13 +235,13 @@ apache:
                         - 'all granted'
                     custom_fragment: ''
                     files_match:
-                        avdfm_0bmbalcaxmht:
+                        avdfm_5s8xu1914old:
                             path: \.php$
                             sethandler: 'proxy:fcgi://127.0.0.1:9000'
                             custom_fragment: ''
                             provider: filesmatch
                     provider: directory
-        av_zlurr2t5049q:
+        av_c6e24zw6mcaf:
             servername: api.dev.local
             docroot: /var/www/app/api/web/
             port: '80'
@@ -241,7 +256,7 @@ apache:
             ssl_protocol: ''
             ssl_cipher: ''
             directories:
-                avd_3bpwb00mwth0:
+                avd_bzrnsfw80oon:
                     path: /var/www/app/api/web/
                     options:
                         - Indexes
@@ -253,7 +268,7 @@ apache:
                         - 'all granted'
                     custom_fragment: ''
                     files_match:
-                        avdfm_lzrxwq8w7kh9:
+                        avdfm_ji5sfs249jqt:
                             path: \.php$
                             sethandler: 'proxy:fcgi://127.0.0.1:9000'
                             custom_fragment: ''
@@ -270,6 +285,10 @@ php:
             - mcrypt
             - imagick
             - curl
+            - gd
+            - mysql
+            - imap
+            - ldap
         pear: {  }
         pecl:
             - pecl_http
@@ -277,11 +296,15 @@ php:
         display_errors: On
         error_reporting: '-1'
         session.save_path: /var/lib/php/session
-        date.timezone: UTC
+        date.timezone: Australia/Sydney
+        html_errors: on
+        max_execution_time: '60'
+        post_max_size: 50M
+        upload_max_filesize: 20M
     fpm_ini:
         error_log: /var/log/php-fpm.log
     fpm_pools:
-        phpfp_3qpq024mkv02:
+        phpfp_ncc7ytymn4qo:
             ini:
                 prefix: www
                 listen: '127.0.0.1:9000'
@@ -354,15 +377,15 @@ mysql:
         override_options: {  }
     adminer: 0
     users:
-        mysqlnu_duzm0ipdqcv7:
+        mysqlnu_m8105e8i5r7p:
             name: app
             password: password
     databases:
-        mysqlnd_gyxssbfylhw1:
+        mysqlnd_0msl1968pdd1:
             name: ab_new
             sql: ''
     grants:
-        mysqlng_um0h4mo30ihj:
+        mysqlng_9un9tymkb11k:
             user: dbuser
             table: '*.*'
             privileges:
@@ -420,7 +443,8 @@ rabbitmq:
     settings:
         port: '5672'
     users: {  }
-    vhosts: {  }
+    vhosts:
+        - dev
     plugins: {  }
 elastic_search:
     install: '0'

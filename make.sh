@@ -1,1 +1,1 @@
-composer create-project --prefer-dist aussiebum/abs_template_yii2 --repository-url=http://abdev:abdev@toran.service.ausbum.com/repo/private/ app
+composer create-project --stability=dev --repository-url=http://toran.service.ausbum.com/repo/private/packages.json aussiebum/abs_template_yii2 app

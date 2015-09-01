@@ -1,5 +1,9 @@
 dir = File.dirname(File.expand_path(__FILE__))
 
+Vagrant.configure(2) do |config|
+  config.ssh.insert_key = false
+end
+
 require 'yaml'
 require "#{dir}/puphpet/ruby/deep_merge.rb"
 
